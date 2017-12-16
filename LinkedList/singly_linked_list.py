@@ -3,23 +3,29 @@ from LinkedList.base_classes import Node, BaseLinkedList
 class SinglyLinkedList(BaseLinkedList):
     def add_nodes(self, elements):
         if elements and self.is_linkedlist_empty():
-            item = elements.pop(0)
-            node = self.create_node(item)
-            self.head = node
+            self._set_first_node(elements.pop(0))
 
         last_node = self._get_last_node()
 
         for item in elements:
-            node = self.create_node(item)
-            last_node.set_next(node)
-            last_node = last_node.get_next()
+            last_node = self._set_and_get_last_node(item, last_node)
+
+    def _set_and_get_last_node(self, item, last_node):
+        node = self.create_node(item)
+        last_node.set_next(node)
+        return last_node.get_next()
+
+    def _set_first_node(self, item):
+        node = self.create_node(item)
+        self.head = node
 
     def add_node(self, element):
-        node = self.create_node(element)
 
         if self.is_linkedlist_empty():
-            self.head = node
+            self._set_first_node(element)
             return
+
+        node = self.create_node(element)
         last_node = self._get_last_node()
         last_node.set_next(node)
 
